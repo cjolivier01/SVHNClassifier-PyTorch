@@ -15,6 +15,7 @@ def _infer(path_to_checkpoint_file, path_to_input_image):
     model = Model()
     model.restore(path_to_checkpoint_file)
     model.cuda()
+    model.eval()
 
     with torch.no_grad():
         transform = transforms.Compose([
@@ -29,17 +30,32 @@ def _infer(path_to_checkpoint_file, path_to_input_image):
         image = transform(image)
         images = image.unsqueeze(dim=0).cuda()
 
-        length_logits, digit1_logits, digit2_logits, digit3_logits, digit4_logits, digit5_logits = model.eval()(images)
+        (
+            length_logits,
+            digit1_logits,
+            digit2_logits,
+            digit3_logits,
+            digit4_logits,
+            digit5_logits,
+        ) = model(images)
 
-        length_prediction = length_logits.max(1)[1]
-        digit1_prediction = digit1_logits.max(1)[1]
-        digit2_prediction = digit2_logits.max(1)[1]
-        digit3_prediction = digit3_logits.max(1)[1]
-        digit4_prediction = digit4_logits.max(1)[1]
-        digit5_prediction = digit5_logits.max(1)[1]
+        length_value, length_prediction = length_logits.max(1)
+        digit1_value, digit1_prediction = digit1_logits.max(1)
+        digit2_value, digit2_prediction = digit2_logits.max(1)
+        digit3_value, digit3_prediction = digit3_logits.max(1)
+        digit4_value, digit4_prediction = digit4_logits.max(1)
+        digit5_value, digit5_prediction = digit5_logits.max(1)
 
-        print('length:', length_prediction.item())
+        print("length:", length_prediction.item(), "value:", length_value.item())
         print('digits:', digit1_prediction.item(), digit2_prediction.item(), digit3_prediction.item(), digit4_prediction.item(), digit5_prediction.item())
+        print(
+            "values:",
+            digit1_value.item(),
+            digit2_value.item(),
+            digit3_value.item(),
+            digit4_value.item(),
+            digit5_value.item(),
+        )
         all_digits = [
             digit1_prediction.item(),
             digit2_prediction.item(),
