@@ -40,6 +40,19 @@ def _infer(path_to_checkpoint_file, path_to_input_image):
 
         print('length:', length_prediction.item())
         print('digits:', digit1_prediction.item(), digit2_prediction.item(), digit3_prediction.item(), digit4_prediction.item(), digit5_prediction.item())
+        all_digits = [
+            digit1_prediction.item(),
+            digit2_prediction.item(),
+            digit3_prediction.item(),
+            digit4_prediction.item(),
+            digit5_prediction.item(),
+        ]
+        final_digits = all_digits[: length_prediction.item()]
+        running = 0
+        for i in range(length_prediction.item()):
+            running *= 10
+            running += all_digits[i]
+        print(f"Final prediction: {running}")
 
 
 def main(args):
