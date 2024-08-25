@@ -47,7 +47,6 @@ def _infer(path_to_checkpoint_file, path_to_input_image):
             digit4_prediction.item(),
             digit5_prediction.item(),
         ]
-        final_digits = all_digits[: length_prediction.item()]
         running = 0
         for i in range(length_prediction.item()):
             running *= 10
