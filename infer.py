@@ -1,14 +1,13 @@
 import argparse
-import torch
 
+import torch
+from model import Model
 from PIL import Image
 from torchvision import transforms
 
-from model import Model
-
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--checkpoint', type=str, required=True, help='path to checkpoint, e.g. ./logs/model-100.pth')
-parser.add_argument('input', type=str, help='path to input image')
+# parser.add_argument('-c', '--checkpoint', type=str, required=True, help='path to checkpoint, e.g. ./logs/model-100.pth')
+# parser.add_argument('input', type=str, help='path to input image')
 
 
 def _infer(path_to_checkpoint_file, path_to_input_image):
@@ -71,8 +70,11 @@ def _infer(path_to_checkpoint_file, path_to_input_image):
 
 
 def main(args):
-    path_to_checkpoint_file = args.checkpoint
-    path_to_input_image = args.input
+    # path_to_checkpoint_file = args.checkpoint
+    # path_to_input_image = args.input
+
+    path_to_checkpoint_file = "pretrained/svhnc/model-65000.pth"
+    path_to_input_image = "/home/colivier/src/hm/test-19.png"
 
     _infer(path_to_checkpoint_file, path_to_input_image)
 
